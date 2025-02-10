@@ -1,13 +1,17 @@
 package org.example;
 
+import org.example.MobilePhoneExercise.Contact;
+import org.example.MobilePhoneExercise.MobilePhone;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Hello world!
  */
 public class Main {
     public static void main(String[] args) {
-        int[] array = SortedArray.getIntegers(5);
-        SortedArray.printArray(array);
-        int[] sortedArray = SortedArray.sortIntegers(array);
-        SortedArray.printArray(sortedArray);
+        ArrayList<String> myList = new ArrayList<>(List.of("abc","123"));
+        myList.listIterator();
     }
 }
