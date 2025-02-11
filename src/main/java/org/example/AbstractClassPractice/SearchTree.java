@@ -134,12 +134,11 @@ public class SearchTree implements NodeList {
 
     @Override
     public void traverse(ListItem root) {
-        if (root.previous() != null) {
-            traverse(root.previous());
+        if (root == null) {
+            return;
         }
+        traverse(root.previous());
         System.out.println(root.getValue());
-        if (root.next() != null) {
-            traverse(root.next());
-        }
+        traverse(root.next());
     }
 }
