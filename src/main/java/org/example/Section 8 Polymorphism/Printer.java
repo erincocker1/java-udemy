@@ -1,5 +1,5 @@
 package org.example;
-// 06/02/25 Section 7 Exercise 39
+// 06/02/25 Section 8 Exercise 39
 public class Printer {
 
     private int tonerLevel;
