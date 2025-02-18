@@ -17,18 +17,18 @@ public class Card {
     private final Suit suit;
     private final String face;
     private final int rank;
-    private boolean isFaceUp;
+    private boolean faceUp;
 
-    private Card(Suit suit, String face, int rank, boolean isFaceUp) {
+    private Card(Suit suit, String face, int rank, boolean faceUp) {
         this.suit = suit;
         this.face = face;
         this.rank = rank;
-        this.isFaceUp = isFaceUp;
+        this.faceUp = faceUp;
     }
 
     @Override
     public String toString() {
-        if (! isFaceUp) {
+        if (!faceUp) {
             return "[-]";
         }
         int index = face.equals("10") ? 2 : 1;
@@ -39,17 +39,20 @@ public class Card {
     public static Card getNumericCard(Suit suit, int cardNumber, boolean isFaceUp) {
 
         if (cardNumber > 1 && cardNumber < 11) {
-            return new Card(suit, String.valueOf(cardNumber), cardNumber - 2, isFaceUp);
+            return new Card(suit, String.valueOf(cardNumber), cardNumber, isFaceUp);
         }
         System.out.println("Invalid Numeric card selected");
         return null;
     }
 
     public static Card getFaceCard(Suit suit, char abbrev, boolean isFaceUp) {
+        if (abbrev == 'A') {
+            return new Card(suit, "A", 1, isFaceUp);
+        }
 
-        int charIndex = "JQKA".indexOf(abbrev);
+        int charIndex = "JQK".indexOf(abbrev);
         if (charIndex > -1) {
-            return new Card(suit, "" + abbrev, charIndex + 9, isFaceUp);
+            return new Card(suit, "" + abbrev, charIndex + 11, isFaceUp);
         }
         System.out.println("Invalid Face card selected");
         return null;
@@ -90,10 +93,24 @@ public class Card {
     }
 
     public Card flip() {
-        this.isFaceUp = ! this.isFaceUp;
+        this.faceUp = ! this.faceUp;
         return this;
     }
 
+    public Suit getSuit() {
+        return suit;
+    }
 
+    public int getRank() {
+        return rank;
+    }
+
+    public boolean isFaceUp() {
+        return faceUp;
+    }
+
+    public void setFaceUp(boolean faceUp) {
+        this.faceUp = faceUp;
+    }
 }
 

@@ -3,14 +3,14 @@ package org.example.Section15.CardGame;
 import java.util.*;
 
 public class Solitaire {
-    private List<List<Card>> tableau = new ArrayList<>(7);
+    List<List<Card>> tableau = new ArrayList<>(7);
     private Deque<Card> stock = new ArrayDeque<>();
     //using arraydeque because java says this is preferred to the legacy class Stack
-    private Deque<Card> wastePile = new ArrayDeque<>();
-    private Deque<Card> hearts = new ArrayDeque<>();
-    private Deque<Card> diamonds = new ArrayDeque<>();
-    private Deque<Card> spades = new ArrayDeque<>();
-    private Deque<Card> clubs = new ArrayDeque<>();
+    Deque<Card> wastePile = new ArrayDeque<>();
+    Deque<Card> hearts = new ArrayDeque<>();
+    Deque<Card> diamonds = new ArrayDeque<>();
+    Deque<Card> spades = new ArrayDeque<>();
+    Deque<Card> clubs = new ArrayDeque<>();
 
     public Solitaire() {
         setUpBoard();
@@ -26,30 +26,33 @@ public class Solitaire {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println();
-            System.out.println("Enter your move: ");
+            System.out.print("Enter your move: ");
             String userInput = scanner.nextLine().toLowerCase();
+            System.out.println();
             if (userInput.equals("stock")) {
                 stockClicked(); //either move top card from stock to waste, or reset stock if empty
             } else if (userInput.equals("quit")) {
                 break;
             } else {
-                System.out.println(userInput);
-                System.out.println(Arrays.toString(userInput.split(" ")));
-                moveCards(userInput.split(" ")[0], userInput.split(" ")[1]);
+                MoveCards.moveCards(this, userInput.toLowerCase());
                 // '3c1 c2' means move the top 3 cards on column 1 to column 2
                 // 'waste c6' means move the card on the wastepile to column 6
                 // '1c7 hearts' means move the top card on column 7 to the hearts pile. (must be 1)
             }
-        }
-    }
 
-    private void moveCards(String source, String dest) {
-        System.out.println("Moving cards");
+            printBoard();
+        }
     }
 
 
     private void stockClicked() {
-        System.out.println("Updating stock pile");
+        if (stock.size() == 0) {
+            while (wastePile.size() != 0) {
+                stock.push(wastePile.pop().flip());
+            }
+        } else {
+            wastePile.push(stock.pop().flip());
+        }
     }
 
     private void setUpBoard() {
@@ -70,7 +73,9 @@ public class Solitaire {
     }
 
     public void printBoard() {
-        System.out.printf("%5s%5s        %5s%5s%5s%5s\n",
+        System.out.printf("%9s%9s      %9s%9s%9s%9s\n",
+                "Stock", "Waste", "Hearts", "Spades", "Clubs", "Diamonds");
+        System.out.printf("%9s%9s      %9s%9s%9s%9s\n",
                 getTopCard(stock), getTopCard(wastePile), getTopCard(hearts),
                 getTopCard(spades), getTopCard(clubs), getTopCard(diamonds));
         System.out.println();
@@ -81,8 +86,9 @@ public class Solitaire {
         }
 
         for (int height = 0; height < maxHeight; height++) {
+            System.out.print("          ");
             for (int column = 0; column < 7; column++) {
-                System.out.printf("%5s", height < tableau.get(column).size() ? tableau.get(column).get(height) : "");
+                System.out.printf("%6s", height < tableau.get(column).size() ? tableau.get(column).get(height) : "");
             }
             System.out.println();
         }
