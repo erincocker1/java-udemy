@@ -4,12 +4,13 @@ import java.util.*;
 
 public class Solitaire {
     private List<List<Card>> tableau = new ArrayList<>(7);
-    private Stack<Card> stock = new Stack<>();
-    private Stack<Card> wastePile = new Stack<>();
-    private Stack<Card> hearts = new Stack<>();
-    private Stack<Card> diamonds = new Stack<>();
-    private Stack<Card> spades = new Stack<>();
-    private Stack<Card> clubs = new Stack<>();
+    private Deque<Card> stock = new ArrayDeque<>();
+    //using arraydeque because java says this is preferred to the legacy class Stack
+    private Deque<Card> wastePile = new ArrayDeque<>();
+    private Deque<Card> hearts = new ArrayDeque<>();
+    private Deque<Card> diamonds = new ArrayDeque<>();
+    private Deque<Card> spades = new ArrayDeque<>();
+    private Deque<Card> clubs = new ArrayDeque<>();
 
     public Solitaire() {
         setUpBoard();
@@ -87,7 +88,7 @@ public class Solitaire {
         }
     }
 
-    private String getTopCard(Stack<Card> stack) {
+    private String getTopCard(Deque<Card> stack) {
         return stack.isEmpty() ? "[ ]" : stack.peek().toString();
     }
 
