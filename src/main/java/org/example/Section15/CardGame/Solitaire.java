@@ -1,32 +1,57 @@
 package org.example.Section15.CardGame;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Solitaire {
-    private List<List<Card>> tableau;
-    private Stack<Card> stock;
-    private Stack<Card> wastePile;
-    private Stack<Card> hearts;
-    private Stack<Card> diamonds;
-    private Stack<Card> spades;
-    private Stack<Card> clubs;
+    private List<List<Card>> tableau = new ArrayList<>(7);
+    private Stack<Card> stock = new Stack<>();
+    private Stack<Card> wastePile = new Stack<>();
+    private Stack<Card> hearts = new Stack<>();
+    private Stack<Card> diamonds = new Stack<>();
+    private Stack<Card> spades = new Stack<>();
+    private Stack<Card> clubs = new Stack<>();
 
     public Solitaire() {
-        tableau = new ArrayList<>(7);
-        stock = new Stack<>();
-        wastePile = new Stack<>();
-        hearts = new Stack<>();
-        diamonds = new Stack<>();
-        spades = new Stack<>();
-        clubs = new Stack<>();
-
-        SetUpBoard();
+        setUpBoard();
+        printBoard();
+        System.out.println("Commands:");
+        System.out.println("Enter 'stock' to show a new card from the stock or to refresh the pile");
+        System.out.println("Enter 'quit' to quit");
+        System.out.println("Enter e.g. '1c1 c4' to move 1 card from column 1 to column 4");
+        System.out.println("Or enter e.g. 'waste hearts' to move the card from the wastepile to the hearts pile");
     }
 
-    private void SetUpBoard() {
+    public void playGame() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println();
+            System.out.println("Enter your move: ");
+            String userInput = scanner.nextLine().toLowerCase();
+            if (userInput.equals("stock")) {
+                stockClicked(); //either move top card from stock to waste, or reset stock if empty
+            } else if (userInput.equals("quit")) {
+                break;
+            } else {
+                System.out.println(userInput);
+                System.out.println(Arrays.toString(userInput.split(" ")));
+                moveCards(userInput.split(" ")[0], userInput.split(" ")[1]);
+                // '3c1 c2' means move the top 3 cards on column 1 to column 2
+                // 'waste c6' means move the card on the wastepile to column 6
+                // '1c7 hearts' means move the top card on column 7 to the hearts pile. (must be 1)
+            }
+        }
+    }
+
+    private void moveCards(String source, String dest) {
+        System.out.println("Moving cards");
+    }
+
+
+    private void stockClicked() {
+        System.out.println("Updating stock pile");
+    }
+
+    private void setUpBoard() {
         for (int i = 0; i < 7; i++) {
             tableau.add(new ArrayList<>());
         }
@@ -34,8 +59,8 @@ public class Solitaire {
         List<Card> deck = Card.getStandardDeck(false);
         Collections.shuffle(deck);
         for (int height = 0; height < 7; height++) {
-            for (int pile = height+1; pile < 7; pile++) {
-                tableau.get(pile).add(deck.remove(0));
+            for (int column = height + 1; column < 7; column++) {
+                tableau.get(column).add(deck.remove(0));
             }
             tableau.get(height).add(deck.remove(0).flip());
         }
@@ -50,13 +75,13 @@ public class Solitaire {
         System.out.println();
 
         int maxHeight = 0;
-        for (List<Card> pile : tableau) {
-            maxHeight = Math.max(pile.size(), maxHeight);
+        for (List<Card> column : tableau) {
+            maxHeight = Math.max(column.size(), maxHeight);
         }
 
         for (int height = 0; height < maxHeight; height++) {
-            for (int pile = 0; pile < 7; pile++) {
-                System.out.printf("%5s", height < tableau.get(pile).size() ? tableau.get(pile).get(height) : "");
+            for (int column = 0; column < 7; column++) {
+                System.out.printf("%5s", height < tableau.get(column).size() ? tableau.get(column).get(height) : "");
             }
             System.out.println();
         }
