@@ -15,5 +15,5 @@ implementation is all my own choices.
 - **Section 11 - AbstractClassPractice:** a hefty exercise where we implemented our own linked 
 list and binary search tree, complete with *add*, *remove*, and *traverse* methods.
 
-- **Section 15 - CardGame (WIP):** we were tasked with making a little card game, making use of some of the methods in the collections class.
-I got slightly carried away and made klondike solitaire :) The output may be a bit wonky because of the emojis. I used the font 'Courier New' which keeps everything aligned!
+- **Section 15 - CardGame:** we were tasked with making a little card game, making use of some of the methods in the collections class.
+I got slightly carried away and made klondike solitaire :) The output may be a bit wonky because of the emojis. I used the font 'Courier New' which keeps everything aligned! It works! But in future I may add more features.
