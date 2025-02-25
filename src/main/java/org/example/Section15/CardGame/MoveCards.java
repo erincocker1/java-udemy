@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class MoveCards {
 
     public static void moveCards(Solitaire solitaire, String userInputLowerCase) {
-        Pattern pattern = Pattern.compile("^([1-7]c[1-7]|waste|hearts|spades|clubs|diamonds) (c[1-7]|hearts|spades|clubs|diamonds)$");
+        Pattern pattern = Pattern.compile("^((1[0123]|[1-9])c[1-7]|waste|hearts|spades|clubs|diamonds) (c[1-7]|hearts|spades|clubs|diamonds)$");
         if (!pattern.matcher(userInputLowerCase).matches()) {
             System.out.println("Invalid command. Enter 'help' to see valid commands");
             return;
