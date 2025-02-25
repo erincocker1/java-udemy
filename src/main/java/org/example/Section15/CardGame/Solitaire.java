@@ -85,6 +85,7 @@ public class Solitaire {
             maxHeight = Math.max(column.size(), maxHeight);
         }
 
+        System.out.println("              1     2     3     4     5     6     7");
         for (int height = 0; height < maxHeight; height++) {
             System.out.print("          ");
             for (int column = 0; column < 7; column++) {
