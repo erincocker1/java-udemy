@@ -80,33 +80,9 @@ public class MoveCards {
     }
 
     private static boolean cardsToBeMovedAreValid(Deque<Card> cards) {
-        Card.Suit prevSuit = Card.Suit.HEART;
-        int prevRank = 1;
-        boolean isFirstCard = true;
-
         for (Card card : cards) {
             if (!card.isFaceUp()) {
                 return false;
-            }
-
-            if (isFirstCard) {
-                isFirstCard = false;
-                prevSuit = card.getSuit();
-                prevRank = card.getRank();
-            } else {
-                if (prevRank - card.getRank() != 1) {
-                    return false;
-                }
-
-                if ((prevSuit == Card.Suit.HEART || prevSuit == Card.Suit.DIAMOND) &&
-                        (card.getSuit() == Card.Suit.HEART || card.getSuit() == Card.Suit.DIAMOND)) {
-                    return false;
-                }
-
-                if ((prevSuit == Card.Suit.SPADE || prevSuit == Card.Suit.CLUB) &&
-                        (card.getSuit() == Card.Suit.SPADE || card.getSuit() == Card.Suit.CLUB)) {
-                    return false;
-                }
             }
         }
         return true;
