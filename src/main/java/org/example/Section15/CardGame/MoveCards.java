@@ -94,6 +94,10 @@ public class MoveCards {
 
     private static boolean tryToPlaceMovedCards(Solitaire solitaire, Deque<Card> cardsToMove, String dest) {
         Card topCard = cardsToMove.peek();
+        if (topCard == null) {
+            return false;
+        }
+
         switch (dest) {
             case "hearts" -> {
                 return canBePlacedOnSuitPile(cardsToMove, topCard,
@@ -114,9 +118,10 @@ public class MoveCards {
             default -> {
                 List<Card> column = solitaire.tableau.get(Integer.parseInt(dest.substring(1,2)) - 1);
 
-                if (column.size() == 0 && topCard.getRank() != 13) {
-                    return false;
+                if (column.size() == 0) {
+                    return topCard.getRank() == 13;
                 }
+
                 if (column.get(column.size()-1).getRank() - topCard.getRank() != 1) {
                     return false;
                 }
