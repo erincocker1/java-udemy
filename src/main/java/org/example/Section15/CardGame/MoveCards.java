@@ -48,6 +48,10 @@ public class MoveCards {
                 int numOfCards = Integer.parseInt(source.substring(0, 1));
                 List<Card> column = solitaire.tableau.get(Integer.parseInt(source.substring(2, 3)) - 1);
 
+                if (column.size() < numOfCards) {
+                    return null;
+                }
+
                 for (int i = 0; i < numOfCards; i++) {
                     cards.push(column.remove(column.size() - 1));
                 }
