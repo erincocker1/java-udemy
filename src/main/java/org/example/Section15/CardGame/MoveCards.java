@@ -119,25 +119,26 @@ public class MoveCards {
                 List<Card> column = solitaire.tableau.get(Integer.parseInt(dest.substring(1,2)) - 1);
 
                 if (column.size() == 0) {
-                    return topCard.getRank() == 13;
-                }
+                    if (topCard.getRank() != 13) {
+                        return false;
+                    };
+                } else {
+                    if (column.get(column.size() - 1).getRank() - topCard.getRank() != 1) {
+                        return false;
+                    }
 
-                if (column.get(column.size()-1).getRank() - topCard.getRank() != 1) {
-                    return false;
-                }
+                    if ((column.get(column.size() - 1).getSuit() == Card.Suit.HEART ||
+                            column.get(column.size() - 1).getSuit() == Card.Suit.DIAMOND) &&
+                            (topCard.getSuit() == Card.Suit.HEART || topCard.getSuit() == Card.Suit.DIAMOND)) {
+                        return false;
+                    }
 
-                if ((column.get(column.size()-1).getSuit() == Card.Suit.HEART ||
-                        column.get(column.size()-1).getSuit() == Card.Suit.DIAMOND) &&
-                        (topCard.getSuit() == Card.Suit.HEART || topCard.getSuit() == Card.Suit.DIAMOND)) {
-                    return false;
+                    if ((column.get(column.size() - 1).getSuit() == Card.Suit.SPADE ||
+                            column.get(column.size() - 1).getSuit() == Card.Suit.CLUB) &&
+                            (topCard.getSuit() == Card.Suit.SPADE || topCard.getSuit() == Card.Suit.CLUB)) {
+                        return false;
+                    }
                 }
-
-                if ((column.get(column.size()-1).getSuit() == Card.Suit.SPADE ||
-                        column.get(column.size()-1).getSuit() == Card.Suit.CLUB) &&
-                        (topCard.getSuit() == Card.Suit.SPADE || topCard.getSuit() == Card.Suit.CLUB)) {
-                    return false;
-                }
-
                 while (cardsToMove.size() != 0) {
                     column.add(cardsToMove.pop());
                 }
