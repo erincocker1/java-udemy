@@ -9,7 +9,7 @@ public class Cart {
     private final int id;
 
     private final Store store;
-    private Map<InventoryItem, Integer> products;
+    Map<InventoryItem, Integer> products;
     private final LocalDate date;
     private final boolean virtual;
 

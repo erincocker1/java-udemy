@@ -75,17 +75,17 @@ public class Store {
         System.out.println();
         System.out.println("Abandoning old carts...");
 
-        int firstActiveCart = -1;
-        for (int i = 0; i < carts.size(); i++) {
-            if (carts.get(i).getDate().equals(LocalDate.now())) {
-                firstActiveCart = i;
+        Cart firstActiveCart = null;
+        for (Cart cart : carts) {
+            if (cart.getDate().equals(LocalDate.now())) {
+                firstActiveCart = cart;
                 break;
             }
         }
-        if (firstActiveCart == -1) {
-            carts.clear();
-        } else {
-            carts = carts.subList(firstActiveCart, carts.size());
+        List<Cart> inactiveCarts = carts.subList(0, carts.indexOf(firstActiveCart));
+        while (!inactiveCarts.isEmpty()) {
+            Cart abandoningCart = inactiveCarts.remove(0);
+            abandoningCart.products.forEach(abandoningCart::removeItem);
         }
     }
 }
