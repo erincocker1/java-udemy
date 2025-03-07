@@ -63,39 +63,43 @@ public class AdventureGame extends Game<Adventurer> {
             case 1 -> {
                 map = new LinkedHashMap<>();
                 for (Weapon weapon : getPlayer(playerIndex).getWeaponsByLevel()) {
-                    map.put(weapon.name().charAt(0), new GameAction(weapon.name().charAt(0), "Choose " + weapon, this::setCurrentWeapon));
+                    map.put(weapon.name().charAt(0),
+                            new GameAction(weapon.name().charAt(0), "Choose " + weapon, this::setCurrentWeapon));
                 }
             }
             case 2 -> {
                 map = new LinkedHashMap<>();
                 for (Location location : getPlayer(playerIndex).getPossibleLocations(gameMap)) {
-                    map.put(location.getName().charAt(0), new GameAction(location.getName().charAt(0), "Visit the " + location, this::chooseLocation));
+                    map.put(location.getName().charAt(0),
+                            new GameAction(location.getName().charAt(0), "Visit the " + location, this::chooseLocation));
                 }
             }
             default -> {
                 map = new LinkedHashMap<>(Map.of(
                         'W', new GameAction('W', "Choose your weapon", this::goToWeaponMenu),
-                        'T', new GameAction('T', "Go to location", this::goToLocationMenu)
+                        'G', new GameAction('G', "Go to " + gameMap.get(getPlayer(playerIndex).getMapStage()).name(),
+                                this::goToLocationMenu)
                 ));
                 map.putAll(getStandardActions());
             }
         }
 
-
         return map;
-    }
-
-    private boolean setCurrentWeapon(int playerIndex, char key) { return getPlayer(playerIndex).setCurrentWeapon(key);}
-
-    private boolean chooseLocation(int playerIndex, char key) {
-        return getPlayer(playerIndex).chooseLocationToFight(key, gameMap);
     }
 
     private boolean goToWeaponMenu(int playerIndex, char key) {
         return getPlayer(playerIndex).goToWeaponMenu();
     }
 
+    private boolean setCurrentWeapon(int playerIndex, char key) {
+        return getPlayer(playerIndex).setCurrentWeapon(key);
+    }
+
     private boolean goToLocationMenu(int playerIndex, char key) {
-        return getPlayer(playerIndex).goToLocationMenu();
+        return getPlayer(playerIndex).goToLocationMenu(gameMap);
+    }
+
+    private boolean chooseLocation(int playerIndex, char key) {
+        return getPlayer(playerIndex).chooseLocationToFight(key, gameMap);
     }
 }

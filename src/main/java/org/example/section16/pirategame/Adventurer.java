@@ -10,16 +10,15 @@ import java.util.Map;
 public class Adventurer implements Player {
     private String name;
     private int currentMenu;
-    private Map<String, Integer> gameData; //mapStage, level
+    private int mapStage;
+    private int level;
     private Weapon currentWeapon;
 
     public Adventurer(String name) {
         this.name = name;
-        this.currentMenu = 0;
-        gameData = new HashMap<>(Map.of(
-                "mapStage", 0,
-                "level", 1
-        ));
+        currentMenu = 0;
+        mapStage = 0;
+        level = 1;
         currentWeapon = Weapon.FIST;
     }
 
@@ -29,7 +28,7 @@ public class Adventurer implements Player {
     }
 
     public List<Weapon> getWeaponsByLevel() {
-        return Weapon.getWeaponsByLevel(gameData.get("level"));
+        return Weapon.getWeaponsByLevel(level);
     }
 
     boolean setCurrentWeapon(char letter) {
@@ -38,14 +37,15 @@ public class Adventurer implements Player {
         return false;
     }
 
-    boolean goToLocationMenu() {
+    boolean goToLocationMenu(List<Stage> gameMap) {
         currentMenu = 2;
+        System.out.println("Going to the " + gameMap.get(mapStage).name());
         return false;
     }
 
     public List<Location> getPossibleLocations(List<Stage> gameMap) {
         List<Location> locations = new ArrayList<>();
-        for (Location location : gameMap.get(gameData.get("mapStage")).locations()) {
+        for (Location location : gameMap.get(mapStage).locations()) {
             if (!location.isBeaten()) locations.add(location);
         }
         return locations;
@@ -53,7 +53,7 @@ public class Adventurer implements Player {
 
     boolean chooseLocationToFight(char letter, List<Stage> gameMap) {
         Location locationToFight = null;
-        for (Location location : gameMap.get(gameData.get("mapStage")).locations()) {
+        for (Location location : gameMap.get(mapStage).locations()) {
             if (location.getName().charAt(0) == letter) {
                 locationToFight = location;
                 break;
@@ -66,6 +66,10 @@ public class Adventurer implements Player {
             if (currentWeapon.getHitPoints() > locationToFight.getStrength()) {
                 System.out.println("Location beaten!");
                 locationToFight.setBeaten(true);
+                level++;
+
+                if (getPossibleLocations(gameMap).size() == 0) mapStage++;
+
             } else {
                 System.out.println("You're not strong enough... Come back when you're rested and stronger");
             }
@@ -85,9 +89,13 @@ public class Adventurer implements Player {
         return currentMenu;
     }
 
+    public int getMapStage() {
+        return mapStage;
+    }
+
     @Override
     public String toString() {
-        return "Adventurer %s is at level %d and wields a %s".formatted(name, gameData.get("level"), currentWeapon);
+        return "Adventurer %s is at level %d and wields a %s".formatted(name, level, currentWeapon);
     }
 
 }
