@@ -6,7 +6,7 @@ import org.example.section16.game.GameAction;
 import java.util.*;
 
 public class AdventureGame extends Game<Adventurer> {
-    List<Map<String, List<Location>>> gameMap;
+    List<Stage> gameMap;
 
     String gameMapData = """
             Stage: Pacific Ocean
@@ -15,18 +15,17 @@ public class AdventureGame extends Game<Adventurer> {
             Abandoned U-boat, 1
             Ruins, 2
             Stage: Tropical Island
-            Fortress, 3
+            Ruined Fortress, 3
             Flooded City, 4
             Monastery, 5""";
 
     public AdventureGame(String gameName) {
         super(gameName);
         gameMap = loadData(gameMapData);
-        System.out.println(gameMap);
     }
 
-    private List<Map<String, List<Location>>> loadData(String gameMapData) {
-        List<Map<String, List<Location>>> gameMap = new ArrayList<>();
+    private List<Stage> loadData(String gameMapData) {
+        List<Stage> gameMap = new ArrayList<>();
         Scanner scanner = new Scanner(gameMapData);
         int stageNumber = -1;
         String stageName = "";
@@ -37,12 +36,10 @@ public class AdventureGame extends Game<Adventurer> {
             if (line.startsWith("Stage: ")) {
                 stageName = line.substring(7);
                 stageNumber++;
-                gameMap.add(new HashMap<>(Map.of(stageName, new ArrayList<>())));
+                gameMap.add(new Stage(stageName, new ArrayList<>()));
             } else {
-                gameMap.get(stageNumber).get(stageName).add(new Location(
-                        line.split(",")[0].trim(),
-                        Integer.parseInt(line.split(",")[1].trim()),
-                        false));
+                gameMap.get(stageNumber).addLocation(line.split(",")[0].trim(),
+                        Integer.parseInt(line.split(",")[1].trim()));
             }
         }
 
@@ -70,14 +67,15 @@ public class AdventureGame extends Game<Adventurer> {
                 }
             }
             case 2 -> {
-                map = new LinkedHashMap<>(Map.of(
-                        'A', new GameAction('A', "Choose location", this::chooseLocation)
-                ));
+                map = new LinkedHashMap<>();
+                for (Location location : getPlayer(playerIndex).getPossibleLocations(gameMap)) {
+                    map.put(location.getName().charAt(0), new GameAction(location.getName().charAt(0), "Visit the " + location, this::chooseLocation));
+                }
             }
             default -> {
                 map = new LinkedHashMap<>(Map.of(
                         'W', new GameAction('W', "Choose your weapon", this::goToWeaponMenu),
-                        'T', new GameAction('T', "Go to location", this::goToLocation)
+                        'T', new GameAction('T', "Go to location", this::goToLocationMenu)
                 ));
                 map.putAll(getStandardActions());
             }
@@ -89,17 +87,15 @@ public class AdventureGame extends Game<Adventurer> {
 
     private boolean setCurrentWeapon(int playerIndex, char key) { return getPlayer(playerIndex).setCurrentWeapon(key);}
 
-
-    //tmp onwards
     private boolean chooseLocation(int playerIndex, char key) {
-        return getPlayer(playerIndex).chooseLocationToFight();
+        return getPlayer(playerIndex).chooseLocationToFight(key, gameMap);
     }
 
     private boolean goToWeaponMenu(int playerIndex, char key) {
         return getPlayer(playerIndex).goToWeaponMenu();
     }
 
-    private boolean goToLocation(int playerIndex, char key) {
-        return getPlayer(playerIndex).goToLocation();
+    private boolean goToLocationMenu(int playerIndex, char key) {
+        return getPlayer(playerIndex).goToLocationMenu();
     }
 }

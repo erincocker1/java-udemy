@@ -12,7 +12,6 @@ public class Adventurer implements Player {
     private int currentMenu;
     private Map<String, Integer> gameData; //mapStage, level
     private Weapon currentWeapon;
-    private List<Location> visitedTowns = new ArrayList<>();
 
     public Adventurer(String name) {
         this.name = name;
@@ -29,28 +28,52 @@ public class Adventurer implements Player {
         return false;
     }
 
+    public List<Weapon> getWeaponsByLevel() {
+        return Weapon.getWeaponsByLevel(gameData.get("level"));
+    }
+
     boolean setCurrentWeapon(char letter) {
         this.currentWeapon = Weapon.getWeaponByChar(letter);
         currentMenu = 0;
         return false;
     }
 
-    public List<Weapon> getWeaponsByLevel() {
-        return Weapon.getWeaponsByLevel(gameData.get("level"));
-    }
-
-    boolean goToLocation() {
-        System.out.println("tbd: print the towns available and you choose which one to fight.");
+    boolean goToLocationMenu() {
         currentMenu = 2;
         return false;
     }
 
-    boolean chooseLocationToFight() {
-        System.out.println("tbd: find out if you've won or lost. take this town off the menu");
+    public List<Location> getPossibleLocations(List<Stage> gameMap) {
+        List<Location> locations = new ArrayList<>();
+        for (Location location : gameMap.get(gameData.get("mapStage")).locations()) {
+            if (!location.isBeaten()) locations.add(location);
+        }
+        return locations;
+    }
+
+    boolean chooseLocationToFight(char letter, List<Stage> gameMap) {
+        Location locationToFight = null;
+        for (Location location : gameMap.get(gameData.get("mapStage")).locations()) {
+            if (location.getName().charAt(0) == letter) {
+                locationToFight = location;
+                break;
+            }
+        }
+
+        if (locationToFight == null) {
+            System.out.println("Invalid location");
+        } else {
+            if (currentWeapon.getHitPoints() > locationToFight.getStrength()) {
+                System.out.println("Location beaten!");
+                locationToFight.setBeaten(true);
+            } else {
+                System.out.println("You're not strong enough... Come back when you're rested and stronger");
+            }
+        }
+
         currentMenu = 0;
         return false;
     }
-
 
 
     @Override
@@ -64,6 +87,7 @@ public class Adventurer implements Player {
 
     @Override
     public String toString() {
-        return "Pirate %s is at level %d and wields a %s".formatted(name, gameData.get("level"), currentWeapon);
+        return "Adventurer %s is at level %d and wields a %s".formatted(name, gameData.get("level"), currentWeapon);
     }
+
 }
