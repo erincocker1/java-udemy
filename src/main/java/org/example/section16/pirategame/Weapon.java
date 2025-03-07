@@ -5,9 +5,9 @@ import java.util.List;
 
 public enum Weapon {
     FIST(1, 1),
-    KNIFE(2, 1),
-    AXE(3, 3),
-    MACHETE(5, 5);
+    PISTOL(2, 1),
+    SHOTGUN(3, 3),
+    RIFLE(5, 5);
 
     private final int hitPoints;
     private final int minLevel;

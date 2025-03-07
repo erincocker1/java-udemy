@@ -7,18 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Pirate implements Player {
+public class Adventurer implements Player {
     private String name;
     private int currentMenu;
     private Map<String, Integer> gameData; //mapStage, level
     private Weapon currentWeapon;
-    private List<Town> visitedTowns = new ArrayList<>();
+    private List<Location> visitedTowns = new ArrayList<>();
 
-    public Pirate(String name) {
+    public Adventurer(String name) {
         this.name = name;
         this.currentMenu = 0;
         gameData = new HashMap<>(Map.of(
-                "mapStage", 1,
+                "mapStage", 0,
                 "level", 1
         ));
         currentWeapon = Weapon.FIST;
@@ -39,13 +39,13 @@ public class Pirate implements Player {
         return Weapon.getWeaponsByLevel(gameData.get("level"));
     }
 
-    boolean goToTown() {
+    boolean goToLocation() {
         System.out.println("tbd: print the towns available and you choose which one to fight.");
         currentMenu = 2;
         return false;
     }
 
-    boolean chooseTownToFight() {
+    boolean chooseLocationToFight() {
         System.out.println("tbd: find out if you've won or lost. take this town off the menu");
         currentMenu = 0;
         return false;
