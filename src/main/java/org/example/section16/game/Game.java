@@ -25,7 +25,7 @@ public abstract class Game<T extends Player> {
             standardActions = new LinkedHashMap<>(Map.of(
                     'I',
                     new GameAction('I', "Print Player Info",
-                            i -> this.printPlayer(i)),
+                            (i,key) -> this.printPlayer(i)),
                     'Q',
                     new GameAction('Q', "Quit Game",
                             this::quitGame)
@@ -52,7 +52,7 @@ public abstract class Game<T extends Player> {
     }
 
     public boolean executeGameAction(int player, GameAction action) {
-        return action.action().test(player);
+        return action.action().test(player, action.key());
     }
 
     public boolean printPlayer(int playerIndex) {
@@ -62,7 +62,7 @@ public abstract class Game<T extends Player> {
         return false;
     }
 
-    public boolean quitGame(int playerIndex) {
+    public boolean quitGame(int playerIndex, char key) {
 
         Player player = players.get(playerIndex);
         System.out.println("Sorry to see you go, " + player.name());
