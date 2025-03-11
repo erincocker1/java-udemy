@@ -7,7 +7,7 @@ public enum Weapon {
     FIST(1, 1),
     PISTOL(2, 1),
     SHOTGUN(3, 3),
-    RIFLE(5, 4),
+    GRENADE(5, 4),
     RPG(6, 5);
 
     private final int hitPoints;
