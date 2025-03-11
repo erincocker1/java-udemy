@@ -63,6 +63,14 @@ public class Adventurer implements Player {
         if (locationToFight == null) {
             System.out.println("Invalid location");
         } else {
+            for (Loot loot: locationToFight.getLoot()) {
+                System.out.println("You found a " + loot.getName() + "!");
+            }
+
+            for (Feature feature: locationToFight.getFeatures()) {
+                System.out.println("You found a " + feature.getName() + "!");
+            }
+
             if (currentWeapon.getHitPoints() > locationToFight.getStrength()) {
                 System.out.println("Location beaten!");
                 locationToFight.setBeaten(true);
