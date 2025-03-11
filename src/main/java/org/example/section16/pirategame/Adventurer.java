@@ -3,12 +3,12 @@ package org.example.section16.pirategame;
 import org.example.section16.game.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Adventurer implements Player {
     private String name;
+    private int health;
+    private int score;
     private int currentMenu;
     private int mapStage;
     private int level;
@@ -16,6 +16,8 @@ public class Adventurer implements Player {
 
     public Adventurer(String name) {
         this.name = name;
+        health = 100;
+        score = 0;
         currentMenu = 0;
         mapStage = 0;
         level = 1;
@@ -64,22 +66,27 @@ public class Adventurer implements Player {
             System.out.println("Invalid location");
         } else {
             for (Loot loot: locationToFight.getLoot()) {
-                System.out.println("You found a " + loot.getName() + "!");
+                System.out.println("You found a " + loot.getName() + "! (+" + loot.getValue() + " to score)");
+                score += loot.getValue();
             }
 
             for (Feature feature: locationToFight.getFeatures()) {
-                System.out.println("You found a " + feature.getName() + "!");
+                System.out.println("You came across a " + feature.getName() + "! (" +
+                        (feature.getValue() > 0 ? "+" : "") + feature.getValue() + " to health)");
+                health += feature.getValue();
             }
 
             if (currentWeapon.getHitPoints() > locationToFight.getStrength()) {
                 System.out.println("Location beaten!");
                 locationToFight.setBeaten(true);
+                score += 1;
                 level++;
 
                 if (getPossibleLocations(gameMap).size() == 0) mapStage++;
 
             } else {
                 System.out.println("You're not strong enough... Come back when you're rested and stronger");
+                health -= 20;
             }
         }
 
@@ -103,7 +110,12 @@ public class Adventurer implements Player {
 
     @Override
     public String toString() {
-        return "Adventurer %s is at level %d and wields a %s".formatted(name, level, currentWeapon);
+        return """
+                Adventurer %s:
+                Level %d
+                HP %d/100
+                Score %d
+                Wielding a %s""".formatted(name, level, health, score, currentWeapon);
     }
 
 }
