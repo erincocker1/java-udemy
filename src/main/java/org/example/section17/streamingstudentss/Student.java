@@ -1,9 +1,7 @@
 package org.example.section17.streamingstudentss;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Student {
 
@@ -112,9 +110,12 @@ public class Student {
         return data[random.nextInt(data.length)];
     }
 
-    public static Student getRandomStudent(Course... courses) {
+    public static Student getRandomStudent(Course... availableCourses) {
 
         int maxYear = LocalDate.now().getYear() + 1;
+
+        Course[] courses = getRandomCourses(availableCourses);
+
 
         Student student = new Student(
                 getRandomVal("AU", "CA", "CN", "GB", "IN", "UA", "US"),
@@ -124,8 +125,27 @@ public class Student {
                 random.nextBoolean(),
                 courses);
 
-        for (Course c : courses) {
-            int lecture = random.nextInt(1, c.lectureCount());
+        watchRandomLectures(student, maxYear, courses);
+
+        return student;
+    }
+
+    private static Course[] getRandomCourses(Course... availableCourses) {
+        int numOfCourses = random.nextInt(1, availableCourses.length + 1);
+        List<Course> coursesList = new ArrayList<>(List.of(availableCourses));
+        Collections.shuffle(coursesList);
+        coursesList = coursesList.subList(0, numOfCourses);
+        return coursesList.toArray(new Course[numOfCourses]);
+    }
+
+    private static void watchRandomLectures(Student student, int maxYear, Course... courses) {
+        int numOfLectures = random.nextInt(1, courses.length + 1);
+        List<Course> coursesList = new ArrayList<>(List.of(courses));
+        Collections.shuffle(coursesList);
+        coursesList = coursesList.subList(0, numOfLectures);
+
+        for (Course c : coursesList) {
+            int lecture = random.nextInt(c.lectureCount()/10, c.lectureCount());
             int year = random.nextInt(student.getYearEnrolled(), maxYear);
             int month = random.nextInt(1, 13);
             if (year == (maxYear - 1)) {
@@ -135,7 +155,7 @@ public class Student {
             }
             student.watchLecture(c.courseCode(), lecture, month, year);
         }
-        return student;
+
     }
 
     @Override
