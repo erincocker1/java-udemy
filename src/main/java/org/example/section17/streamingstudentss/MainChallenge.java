@@ -31,7 +31,7 @@ public class MainChallenge {
 
 
         Map<Integer, Long> courseAmountCounts = students.stream()
-                .map(student -> student.getEngagementMap().keySet().size())
+                .map(student -> student.getEngagementMap().size())
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
         System.out.println(courseAmountCounts);
         System.out.println("----------------------------------------------");
