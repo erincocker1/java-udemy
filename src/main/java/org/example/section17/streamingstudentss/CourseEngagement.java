@@ -2,6 +2,7 @@ package org.example.section17.streamingstudentss;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.StringJoiner;
 
 public class CourseEngagement {
 
@@ -65,5 +66,15 @@ public class CourseEngagement {
         return "%s: %s %d %s [%d]".formatted(course.courseCode(),
                 getLastActivityMonth(), getLastActivityYear(), engagementType,
                 getMonthsSinceActive());
+    }
+
+    public String toJSON() {
+        return new StringJoiner(", ", "{", "}")
+                .add("\"course\": \"" + course.toString() + "\"")
+                .add("\"enrollmentDate\": \"" + enrollmentDate + "\"")
+                .add("\"engagementType\": \"" + engagementType + "\"")
+                .add("\"lastLecture\": " + lastLecture)
+                .add("\"lastActivityDate\": \"" + lastActivityDate + "\"")
+                .toString();
     }
 }

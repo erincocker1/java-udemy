@@ -170,4 +170,24 @@ public class Student {
                 ", engagementMap=" + engagementMap +
                 '}';
     }
+
+    public String toJSON() {
+        return new StringJoiner(", ", "{", "}")
+                .add("\"studentId\": " + studentId)
+                .add("\"countryCode\": \"" + countryCode + "\"")
+                .add("\"yearEnrolled\": " + yearEnrolled)
+                .add("\"ageEnrolled\": " + ageEnrolled)
+                .add("\"gender\": \"" + gender + "\"")
+                .add("\"programmingExperience\": " + programmingExperience)
+                .add("\"engagementMap\": " + getEngagementMapJSON())
+                .toString();
+    }
+
+    private String getEngagementMapJSON() {
+        StringJoiner stringJoiner = new StringJoiner(", ", "{", "}");
+        for (Map.Entry<String, CourseEngagement> entry : engagementMap.entrySet()) {
+            stringJoiner.add("\"" + entry.getKey() + "\": " + entry.getValue().toJSON());
+        }
+        return stringJoiner.toString();
+    }
 }
