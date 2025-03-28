@@ -50,7 +50,7 @@ public class IndexingAFileSystem {
         StringJoiner stringJoiner = new StringJoiner(System.lineSeparator());
         try (Stream<Path> children = Files.list(initialPath)) {
             for (Path path : children.toList()) {
-                stringJoiner.add(path.toString());
+                stringJoiner.add(Files.getLastModifiedTime(path) + "    " + path);
                 if (Files.isDirectory(path)) {
                     stringJoiner.add(Files.readString(Path.of(path + "/index.txt")));
                 }
