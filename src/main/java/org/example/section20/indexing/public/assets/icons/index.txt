@@ -1,0 +1,1 @@
+src\main\java\org\example\section20\indexing\public\assets\icons\index.txt

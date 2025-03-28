@@ -1,0 +1,5 @@
+src\main\java\org\example\section20\indexing\public\assets
+src\main\java\org\example\section20\indexing\public\assets\icons
+src\main\java\org\example\section20\indexing\public\assets\icons\index.txt
+src\main\java\org\example\section20\indexing\public\assets\index.txt
+src\main\java\org\example\section20\indexing\public\index.txt
