@@ -23,7 +23,7 @@ public class ShoeWarehouse {
 
     }
 
-    public synchronized void fulfillOrder() {
+    public synchronized Order fulfillOrder() {
         while (orders.isEmpty()) {
             try {
                 wait();
@@ -34,5 +34,6 @@ public class ShoeWarehouse {
         Order order = orders.remove();
         System.out.println(Thread.currentThread().getName() + " fulfilled order: " + order);
         notifyAll();
+        return order;
     }
 }
