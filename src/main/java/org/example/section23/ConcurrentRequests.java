@@ -7,7 +7,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -54,8 +53,7 @@ public class ConcurrentRequests {
                 .map(body -> HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofString(body)))
                 .map(builder -> builder.uri(baseUri))
                 .map(HttpRequest.Builder::build)
-                .map(request -> client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(
-                        orderTracking, StandardOpenOption.APPEND)))
+                .map(request -> client.sendAsync(request, HttpResponse.BodyHandlers.ofString()))
                 .toList();
 
         var allFutureRequests = CompletableFuture.allOf(
@@ -63,6 +61,17 @@ public class ConcurrentRequests {
         );
 
         allFutureRequests.join();
+
+        StringJoiner responseData = new StringJoiner("\n");
+        futures.forEach(f -> {
+            responseData.add(f.join().body());
+        });
+
+        try {
+            Files.writeString(orderTracking, responseData.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     private static void sendGets(HttpClient client, List<URI> uris) {
 
