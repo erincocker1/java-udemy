@@ -17,3 +17,7 @@ list and binary search tree, complete with *add*, *remove*, and *traverse* metho
 
 - **Section 15 - CardGame:** we were tasked with making a little card game, making use of some of the methods in the collections class.
 I got slightly carried away and made klondike solitaire :) The output may be a bit wonky because of the emojis. I used the font 'Courier New' which keeps everything aligned! It works! But in future I may add more features.
+
+- **Section 16 - PirateGame:** we extended the pre-made game classes (from the game package in this section) to make our own 'pirate' game.
+Some of the features I included are essentially just what we were instructed to include.
+However, a lot of this challenge I chose to do in my own way to make a better game (still very basic though, don't get excited!)
